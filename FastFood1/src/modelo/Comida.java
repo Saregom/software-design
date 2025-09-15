@@ -6,6 +6,11 @@ public class Comida {
 	private String precio;
 	private String descripcion;
 	private ArrayList<String> Ingredientes = new ArrayList<>();
+	
+	Comida(int id, String nombre, String precio, String descripcion){
+		
+	}
+	
 	public int getId() {
 		return id;
 	}
