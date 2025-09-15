@@ -22,7 +22,7 @@ public class Header extends JPanel {
 	 */
 	public Header() {
 		setBackground(new Color(255, 91, 21));
-		setBounds(0, 0, 709, 52);
+		setBounds(0, 0, 704, 40);
 		setLayout(null);
 		
 		JButton btnNewButton = new JButton("Recetas");
@@ -38,7 +38,7 @@ public class Header extends JPanel {
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnNewButton.setBackground(new Color(255, 91, 21));
-		btnNewButton.setBounds(527, 11, 84, 30);
+		btnNewButton.setBounds(527, 5, 84, 30);
 		btnNewButton.setBorderPainted(false);
 		btnNewButton.setFocusPainted(false);
 		btnNewButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -69,12 +69,12 @@ public class Header extends JPanel {
 		btnNewButton_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton_1.setBorderPainted(false);
 		btnNewButton_1.setBackground(new Color(255, 91, 21));
-		btnNewButton_1.setBounds(615, 11, 84, 30);
+		btnNewButton_1.setBounds(615, 5, 84, 30);
 		add(btnNewButton_1);
 		
 		JLabel titleMenu = new JLabel("FastFoodINC");
 		titleMenu.setFont(new Font("Dialog", Font.BOLD, 15));
-		titleMenu.setBounds(20, 19, 99, 14);
+		titleMenu.setBounds(10, 13, 99, 14);
 		add(titleMenu);
 
 	}

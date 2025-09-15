@@ -41,8 +41,8 @@ public class MainWindow extends JFrame {
 		setTitle("Comida Rapida");
 		setLocationRelativeTo(null);
 		
-		Recipes panel_1 = new Recipes();
-		contentPane.add(panel_1);
+		Recipes recipesPanel = new Recipes();
+		contentPane.add(recipesPanel);
 	
 		Header header = new Header();
 		contentPane.add(header);
