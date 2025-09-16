@@ -8,6 +8,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import Controlador.Restaurante;
@@ -57,9 +58,9 @@ public class Products extends JPanel {
         addButton.setBounds(277, 361, 150, 29);
         addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				productForm = new ProductForm(restauranteDonJuan, new ProductActions() {
+				productForm = new ProductForm(restauranteDonJuan, null, new ProductActions() {
 					@Override
-					public void onProductAdded() {
+					public void onProductSaved() {
 						getProducts(productsList); 
 					}
 				});
@@ -89,7 +90,7 @@ public class Products extends JPanel {
 	        foodName.setFont(new Font("Tahoma", Font.BOLD, 14));
 	        productMainPanel.add(foodName);
 	        
-	        JLabel price = new JLabel(String.valueOf(food.getPrecio()));
+	        JLabel price = new JLabel("$"+String.valueOf(food.getPrecio()));
 	        price.setFont(new Font("Tahoma", Font.PLAIN, 11));
 	        productMainPanel.add(price);
 	        
@@ -114,7 +115,7 @@ public class Products extends JPanel {
 	        }
 	        
 	        JPanel recipePanel = new JPanel();
-	        recipePanel.setBounds(311, 0, 312, 134);
+	        recipePanel.setBounds(311, 0, 296, 134);
 	        productPanel.add(recipePanel);
 	        recipePanel.setLayout(new BoxLayout(recipePanel, BoxLayout.Y_AXIS));
 	        
@@ -129,21 +130,40 @@ public class Products extends JPanel {
 	        recipePanel.add(recipeDetails);
 	        
 	        JPanel productButtons = new JPanel();
-	        productButtons.setBounds(623, 0, 64, 134);
+	        productButtons.setBounds(607, 0, 80, 134);
 	        productPanel.add(productButtons);
 	        productButtons.setLayout(new GridLayout(0, 1, 0, 0));
 	        
-	        JLabel lblNewLabel_7 = new JLabel("Editar");
-	        lblNewLabel_7.setForeground(new Color(0, 255, 64));
-	        lblNewLabel_7.setFont(new Font("Tahoma", Font.BOLD, 12));
-	        lblNewLabel_7.setHorizontalAlignment(SwingConstants.CENTER);
-	        productButtons.add(lblNewLabel_7);
+	        // boton de actualizar comida
+	        JButton editButton = new JButton("Editar");
+	        editButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					productForm = new ProductForm(restauranteDonJuan, food, new ProductActions() {
+						@Override
+						public void onProductSaved() {
+							getProducts(productsList); 
+						}
+					});
+				    productForm.setVisible(true);
+				}
+			});
+	        productButtons.add(editButton);
 	        
-	        JLabel lblNewLabel_8 = new JLabel("Eliminar");
-	        lblNewLabel_8.setForeground(new Color(255, 0, 0));
-	        lblNewLabel_8.setFont(new Font("Tahoma", Font.BOLD, 12));
-	        lblNewLabel_8.setHorizontalAlignment(SwingConstants.CENTER);
-	        productButtons.add(lblNewLabel_8);
+	        // boton de eliminar comida
+	        JButton deleteButton = new JButton("Eliminar");
+	        deleteButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					int option = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar este producto?", 
+					        "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+					
+					// si eligio si, eliminar y actualizar lista
+					if (option == JOptionPane.YES_OPTION) {
+						restauranteDonJuan.eliminarProducto(food);
+						getProducts(productsList);
+					}
+				}
+			});
+	        productButtons.add(deleteButton);
 	        
 	        productsList.add(productPanel);
 		}
@@ -155,5 +175,5 @@ public class Products extends JPanel {
 
 // para que el formulario de producto pueda refrescar la lista de productos
 interface ProductActions {
-    void onProductAdded();
+    void onProductSaved();
 }

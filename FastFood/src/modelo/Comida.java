@@ -1,6 +1,8 @@
 package modelo;
 import java.util.ArrayList;
 public class Comida {
+	private static int contadorId = 1; // contador autoincremental
+	
 	private int id;
 	private String nombre;
 	private double precio;
@@ -8,8 +10,8 @@ public class Comida {
 	private ArrayList<String> ingredientes = new ArrayList<>();
 	private String receta;
 	
-	public Comida(int id, String nombre, double precio, String descripcion, ArrayList<String> ingredientes, String receta){
-		this.id = id;
+	public Comida(String nombre, double precio, String descripcion, ArrayList<String> ingredientes, String receta){
+		this.id = contadorId++;
 		this.nombre = nombre;
 		this.precio = precio;
 		this.descripcion = descripcion;
@@ -58,5 +60,8 @@ public class Comida {
 		this.receta = receta;
 	}
 	
-	
+	// para mostrar el nombre de la comida en el seleccionable del formulario de cliente
+	public String toString() {
+	    return this.nombre;
+	}
 }

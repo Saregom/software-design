@@ -1,14 +1,16 @@
 package modelo;
 
 public class Persona {
+	private static int contadorId = 1; // contador autoincremental
+	
 	private int id;
 	private String cedula;
 	private String nombre;
 	private String direccion;
 	private int telefono;
 	
-	public Persona(int id, String cedula, String nombre, String direccion, int telefono) {
-		this.id = id;
+	public Persona(String cedula, String nombre, String direccion, int telefono) {
+		this.id = contadorId++;
 		this.cedula = cedula;
 		this.nombre = nombre;
 		this.direccion = direccion;

@@ -1,10 +1,12 @@
 package modelo;
-import modelo.Persona;
+//import modelo.Persona;
+
 public class Empleado extends Persona{
 	private String cargo;
 	private String contrasenia;
-	public Empleado(int id, String cedula, String nombre, String direccion, int telefono, String cargo, String contrasenia) {
-		super(id, cedula, nombre, direccion, telefono);
+	
+	public Empleado(String cedula, String nombre, String direccion, int telefono, String cargo, String contrasenia) {
+		super(cedula, nombre, direccion, telefono);
 		this.setCargo(cargo);
 		this.setContrasenia(contrasenia);
 		

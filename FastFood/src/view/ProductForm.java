@@ -32,13 +32,15 @@ public class ProductForm extends JFrame {
 	private JTextArea recipeField;
 	
 	Restaurante restauranteDonJuan;
+	Comida editFood;
 	ProductActions productActions;
 
 	/**
-	 * Create the panel.
+	 * Creacion y definicion de la ventana de formulario del producto
 	 */
-	public ProductForm(Restaurante restauranteDonJuan, ProductActions productActions) {
+	public ProductForm(Restaurante restauranteDonJuan, Comida editFood, ProductActions productActions) {
 		this.restauranteDonJuan = restauranteDonJuan;
+		this.editFood = editFood;
 		this.productActions = productActions;
 		
 		setBounds(100, 100, 350, 460);
@@ -113,41 +115,73 @@ public class ProductForm extends JFrame {
 		saveButton.setBounds(79, 357, 175, 30);
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				addProduct();
+				saveProduct();
 			}
 		});
 		getContentPane().add(saveButton);
 		
+		setFood();
+		
 	}
 	
 	// Agregar producto al restaurante
-	private void addProduct() {
+	private void saveProduct() {
 		// campos vacios
         if (nameField.getText().isEmpty() || priceField.getText().isEmpty() || descriptionField.getText().isEmpty() || ingredientsField.getText().isEmpty() || recipeField.getText().isEmpty()) {
         	JOptionPane.showMessageDialog(this, "Hay campos vacios", "Alerta", JOptionPane.WARNING_MESSAGE);
         	return;
         }
         
+        // verificar existencia de producto
+        if (editFood == null && restauranteDonJuan.verificarProducto(nameField.getText().trim())) {
+        	JOptionPane.showMessageDialog(this, "El nombre del producto ya existe", "Alerta", JOptionPane.WARNING_MESSAGE);
+        	return;
+        }
+        
+    	String name = nameField.getText().trim();
+        String description = descriptionField.getText().trim();
+        ArrayList<String> ingredients = new ArrayList<>(
+    	    Arrays.stream(ingredientsField.getText().split(","))
+    	          .map(String::trim)   // eliminar espacios a los lados
+    	          .filter(s -> !s.isEmpty()) // eliminar vacíos
+    	          .toList()
+    	);
+        String recipe = recipeField.getText().trim();
+        
+        // validar precio
+        double price;
         try {
-	    	String nombre = nameField.getText().trim();
-	        double precio = Double.parseDouble(priceField.getText().trim());
-	        String descripcion = descriptionField.getText().trim();
-	        ArrayList<String> ingredientes = new ArrayList<>(
-				Arrays.asList(ingredientsField.getText().split(","))
-	        );
-	        String receta = recipeField.getText().trim();
-	  
-	        Comida newProduct = new Comida(1, nombre, precio, descripcion, ingredientes, receta);
-	        
-	        this.restauranteDonJuan.agregarProducto(newProduct); // adicion
-	        
-	        JOptionPane.showMessageDialog(this, "Producto agregado correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-	        productActions.onProductAdded();
-	        
-	        setVisible(false);
-	        
+            price = Double.parseDouble(priceField.getText().trim());
         } catch (NumberFormatException e) {
         	JOptionPane.showMessageDialog(this, "Ingresa un precio valido", "Error", JOptionPane.ERROR_MESSAGE);
+        	return;
         } 
+
+        Comida newProduct = new Comida(name, price, description, ingredients, recipe);
+
+        // agregar y editar comida
+        if (editFood == null) {
+	        this.restauranteDonJuan.agregarProducto(newProduct);
+        }
+        else {
+        	this.restauranteDonJuan.modificarProducto(newProduct);
+        }
+        
+        JOptionPane.showMessageDialog(this, "Producto guardado correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        productActions.onProductSaved();
+        setVisible(false);
+	}
+	
+	// setear la comida a editar en los campos del formulario
+	private void setFood() {
+		if (editFood != null) {
+			nameField.setText(editFood.getNombre());
+			nameField.setEnabled(false);
+			priceField.setText(String.valueOf(editFood.getPrecio()));
+			descriptionField.setText(editFood.getDescripcion());
+			ingredientsField.setText(String.join(", ", editFood.getIngredientes()));
+			recipeField.setText(editFood.getReceta());
+			
+		}
 	}
 }

@@ -5,11 +5,13 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.util.ArrayList;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -20,6 +22,7 @@ import modelo.Cliente;
 public class Clients extends JPanel {
 
     private static final long serialVersionUID = 1L;
+    private ClientForm clientForm;
 	Restaurante restauranteDonJuan;
 
     /**
@@ -47,7 +50,29 @@ public class Clients extends JPanel {
         scrollPane.setBounds(0, 50, 704, 256);
         add(scrollPane);
 
-        for (Cliente client : this.getClients()) {
+        getClients(clientsList);
+        
+        JButton addButton = new JButton("Agregar cliente");
+        addButton.setFont(new Font("Tahoma", Font.BOLD, 12));
+        addButton.setBounds(277, 317, 150, 29);
+        addButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				clientForm = new ClientForm(restauranteDonJuan, null, new ClientActions() {
+					@Override
+					public void onClientSaved() {
+						getClients(clientsList); 
+					}
+				});
+				clientForm.setVisible(true);
+			}
+		});
+        add(addButton);
+    }
+    
+    public void getClients(JPanel clientsList) {
+    	clientsList.removeAll();
+    	
+    	for (Cliente client : this.restauranteDonJuan.listarClientes()) {
             JPanel clientPanel = new JPanel();
             clientPanel.setBackground(new Color(255, 255, 255));
             clientPanel.setPreferredSize(new Dimension(205, 190));
@@ -123,21 +148,42 @@ public class Clients extends JPanel {
             panel.setLayout(new GridLayout(1, 0, 0, 0));
             
             JButton editButton = new JButton("Editar");
+	        editButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					clientForm = new ClientForm(restauranteDonJuan, client, new ClientActions() {
+						@Override
+						public void onClientSaved() {
+							getClients(clientsList); 
+						}
+					});
+					clientForm.setVisible(true);
+				}
+			});
             panel.add(editButton);
             
-            JButton btnNewButton_1 = new JButton("Eliminar");
-            panel.add(btnNewButton_1);
+            JButton deleteButton = new JButton("Eliminar");
+            deleteButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					int option = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar este cliente?", 
+					        "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+					
+					// si eligio si, eliminar y actualizar lista
+					if (option == JOptionPane.YES_OPTION) {
+						restauranteDonJuan.eliminarCliente(client);
+						getClients(clientsList);
+					}
+				}
+			});
+            panel.add(deleteButton);
             
             clientsList.add(clientPanel);
         }
-        
-        JButton addButton = new JButton("Agregar cliente");
-        addButton.setFont(new Font("Tahoma", Font.BOLD, 12));
-        addButton.setBounds(277, 317, 150, 29);
-        add(addButton);
-    }
-    
-    public ArrayList<Cliente> getClients() {
-		return this.restauranteDonJuan.listarClientes();
+    	
+    	clientsList.revalidate(); 
+    	clientsList.repaint(); 
 	}
+}
+
+interface ClientActions {
+    void onClientSaved();
 }

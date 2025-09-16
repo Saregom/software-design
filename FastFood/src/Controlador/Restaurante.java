@@ -26,7 +26,19 @@ public class Restaurante {
 	
 	// Lo agregamos a la lista de clientes del restaurante. 
 	public void agregarCliente(Cliente cliente) {
-		clientes.add(cliente);
+		if (!verificarCedula(cliente.getCedula())) {
+			clientes.add(cliente);
+		}
+	}
+	
+	// validar si el cliente ya existe
+	public boolean verificarCedula(String nuevaCedula) {
+		for (Cliente c : clientes) {
+	        if (c.getCedula().toLowerCase().equals(nuevaCedula.toLowerCase())) {
+	            return true;
+	        }
+	    }
+		return false;
 	}
 	
 	// Actualizamos informacion del cliente del restaurante.
@@ -34,13 +46,10 @@ public class Restaurante {
 		for(Cliente client:clientes) {
 			if(client.getCedula().equals(cliente.getCedula())) {
 				// si todo sale bien actualiza la informacion del cliente.
-				
-				// ACA validar si la comida del cliente existe. no se paque pero bueno
-				
-				client.setComida(cliente.getComida());
-				client.setDireccion(cliente.getDireccion());
 				client.setNombre(cliente.getNombre());
+				client.setDireccion(cliente.getDireccion());
 				client.setTelefono(cliente.getTelefono());
+				client.setComida(cliente.getComida());
 			}
 		}
 	}
@@ -57,7 +66,19 @@ public class Restaurante {
 	
 	// agregamos una comida a la carta del restaurante.
 	public void agregarProducto(Comida producto) {
-		productos.add(producto);
+		if (!verificarProducto(producto.getNombre())) {
+			productos.add(producto);
+		}
+	}
+	
+	// validar si el producto ya existe
+	public boolean verificarProducto(String nuevoNombre) {
+		for (Comida p : productos) {
+	        if (p.getNombre().toLowerCase().equals(nuevoNombre.toLowerCase())) {
+	            return true;
+	        }
+	    }
+		return false;
 	}
 	
 	// modificamos la comida
@@ -66,13 +87,10 @@ public class Restaurante {
 		for(Comida comida:productos) {
 			if(comida.getNombre().equals(producto.getNombre())) {
 				// si todo sale bien actualiza la informacion del cliente.
-				
-				// ACA validar si la comida del cliente existe. no se paque pero bueno
-				
-				comida.setDescripcion(producto.getDescripcion());
-				comida.setNombre(producto.getNombre());
 				comida.setPrecio(producto.getPrecio());
+				comida.setDescripcion(producto.getDescripcion());
 				comida.setIngredientes(producto.getIngredientes());
+				comida.setReceta(producto.getReceta());
 			}
 		}
 		
