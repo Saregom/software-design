@@ -9,7 +9,7 @@ public class Main {
 	}
 
 	private static void showWindow() {
-		MainWindow window = new MainWindow();
+		MainWindow window = new MainWindow(null);
 		window.setVisible(true);
 	}
 }
