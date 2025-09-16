@@ -3,20 +3,22 @@ import java.util.ArrayList;
 public class Comida {
 	private int id;
 	private String nombre;
-	private String precio;
+	private double precio;
 	private String descripcion;
 	private ArrayList<String> ingredientes = new ArrayList<>();
+	private String receta;
 	
-	Comida(int id, String nombre, String precio, String descripcion, ArrayList<String> ingredientes){
+	public Comida(int id, String nombre, double precio, String descripcion, ArrayList<String> ingredientes, String receta){
 		this.id = id;
 		this.nombre = nombre;
 		this.precio = precio;
 		this.descripcion = descripcion;
 		this.ingredientes = ingredientes;
+		this.receta = receta;
 	}
 	
 	public void addIngredients(ArrayList<String> nuevosIngredientes) {
-			ingredientes.addAll(nuevosIngredientes);
+		ingredientes.addAll(nuevosIngredientes);
 	}
 	
 	public int getId() {
@@ -31,10 +33,10 @@ public class Comida {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public String getPrecio() {
+	public double getPrecio() {
 		return precio;
 	}
-	public void setPrecio(String precio) {
+	public void setPrecio(double precio) {
 		this.precio = precio;
 	}
 	public String getDescripcion() {
@@ -49,5 +51,12 @@ public class Comida {
 	public void setIngredientes(ArrayList<String> NuevosIngredientes) {
 		ingredientes = NuevosIngredientes;
 	}
+	public String getReceta() {
+		return receta;
+	}
+	public void setReceta(String receta) {
+		this.receta = receta;
+	}
+	
 	
 }

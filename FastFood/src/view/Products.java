@@ -9,18 +9,28 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
+import Controlador.Restaurante;
+import modelo.Comida;
+
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.Component;
 
 public class Products extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	private ProductForm productForm;
+	Restaurante restauranteDonJuan;
 
 	/**
 	 * Create the panel.
 	 */
-	public Products() {
+	public Products(Restaurante restauranteDonJuan) {
+		this.restauranteDonJuan = restauranteDonJuan;
+		
 		setBackground(new Color(255, 255, 255));
 		setBounds(0, 40, 704, 401);
 		setLayout(null);
@@ -40,73 +50,87 @@ public class Products extends JPanel {
         scrollPane_1.setBounds(0, 50, 704,300);
         add(scrollPane_1);
         
-	    for (int i = 1; i <= 10; i++) {
-	        JPanel product = new JPanel();
-	        product.setBackground(new Color(255, 255, 255));
-	        product.setPreferredSize(new Dimension(667, 139));
-	        productsList.add(product);
-	        product.setLayout(null);
+        getProducts(productsList);
+        
+        JButton addButton = new JButton("Agregar producto");
+        addButton.setFont(new Font("Tahoma", Font.BOLD, 12));
+        addButton.setBounds(277, 361, 150, 29);
+        addButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				productForm = new ProductForm(restauranteDonJuan, new ProductActions() {
+					@Override
+					public void onProductAdded() {
+						getProducts(productsList); 
+					}
+				});
+			    productForm.setVisible(true);
+			}
+		});
+        add(addButton);
+	}
+	
+	private void getProducts(JPanel productsList) {
+		productsList.removeAll(); // limpiar panel
+		
+		for (Comida food : this.restauranteDonJuan.listarProductos()) {
+	        JPanel productPanel = new JPanel();
+	        productPanel.setBackground(new Color(255, 255, 255));
+	        productPanel.setPreferredSize(new Dimension(667, 139));
+	        productsList.add(productPanel);
+	        productPanel.setLayout(null);
 	        
+	        // panel info principal
+	        JPanel productMainPanel = new JPanel();
+	        productMainPanel.setBounds(0, 0, 140, 134);
+	        productPanel.add(productMainPanel);
+	        productMainPanel.setLayout(new BoxLayout(productMainPanel, BoxLayout.Y_AXIS));
+	        
+	        JLabel foodName = new JLabel("<html>"+food.getNombre()+"</html>");
+	        foodName.setFont(new Font("Tahoma", Font.BOLD, 14));
+	        productMainPanel.add(foodName);
+	        
+	        JLabel price = new JLabel(String.valueOf(food.getPrecio()));
+	        price.setFont(new Font("Tahoma", Font.PLAIN, 11));
+	        productMainPanel.add(price);
+	        
+	        JLabel description = new JLabel("<html>"+food.getDescripcion()+"</html>");
+	        description.setFont(new Font("Tahoma", Font.PLAIN, 11));
+	        productMainPanel.add(description);
+	        
+	        // panel ingredientes 
 	        JPanel productIngredients = new JPanel();
 	        productIngredients.setBounds(140, 0, 171, 134);
-	        product.add(productIngredients);
+	        productPanel.add(productIngredients);
 	        productIngredients.setLayout(new BoxLayout(productIngredients, BoxLayout.Y_AXIS));
 	        
 	        JLabel IngredientsTitle = new JLabel("Ingredientes");
 	        IngredientsTitle.setFont(new Font("Tahoma", Font.BOLD, 12));
 	        productIngredients.add(IngredientsTitle);
 	        
-	        JLabel ingredient_1 = new JLabel("Carne 230g");
-	        ingredient_1.setFont(new Font("Tahoma", Font.PLAIN, 11));
-	        productIngredients.add(ingredient_1);
+	        for(String ingredient : food.getIngredientes()) {
+	        	JLabel ingredient_1 = new JLabel(ingredient);
+		        ingredient_1.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		        productIngredients.add(ingredient_1);
+	        }
 	        
-	        JLabel ingredient_2 = new JLabel("Pan");
-	        ingredient_2.setFont(new Font("Tahoma", Font.PLAIN, 11));
-	        productIngredients.add(ingredient_2);
+	        JPanel recipePanel = new JPanel();
+	        recipePanel.setBounds(311, 0, 312, 134);
+	        productPanel.add(recipePanel);
+	        recipePanel.setLayout(new BoxLayout(recipePanel, BoxLayout.Y_AXIS));
 	        
-	        JLabel ingredient_3 = new JLabel("Lechuga");
-	        ingredient_3.setFont(new Font("Tahoma", Font.PLAIN, 11));
-	        productIngredients.add(ingredient_3);
+	        JLabel recipeTitle = new JLabel("Preparación");
+	        recipeTitle.setAlignmentY(Component.TOP_ALIGNMENT);
+	        recipeTitle.setVerticalAlignment(SwingConstants.TOP);
+	        recipeTitle.setFont(new Font("Tahoma", Font.BOLD, 12));
+	        recipePanel.add(recipeTitle);
 	        
-	        JLabel ingredient_4 = new JLabel("Queso");
-	        ingredient_4.setFont(new Font("Tahoma", Font.PLAIN, 11));
-	        productIngredients.add(ingredient_4);
-	        
-	        JPanel productMainPanel = new JPanel();
-	        productMainPanel.setBounds(0, 0, 140, 134);
-	        product.add(productMainPanel);
-	        productMainPanel.setLayout(new BoxLayout(productMainPanel, BoxLayout.Y_AXIS));
-	        
-	        JLabel foodName = new JLabel("<html>Hamburguesa</html>");
-	        foodName.setFont(new Font("Tahoma", Font.BOLD, 14));
-	        productMainPanel.add(foodName);
-	        
-	        JLabel price = new JLabel("$10000");
-	        price.setFont(new Font("Tahoma", Font.PLAIN, 11));
-	        productMainPanel.add(price);
-	        
-	        JLabel description = new JLabel("<html>Hamburguesa simple con carne y queso</html>");
-	        description.setFont(new Font("Tahoma", Font.PLAIN, 11));
-	        productMainPanel.add(description);
-	        
-	        JPanel productRecipe = new JPanel();
-	        productRecipe.setBounds(311, 0, 312, 134);
-	        product.add(productRecipe);
-	        productRecipe.setLayout(new BoxLayout(productRecipe, BoxLayout.Y_AXIS));
-	        
-	        JLabel preparationTitle = new JLabel("Preparación");
-	        preparationTitle.setAlignmentY(Component.TOP_ALIGNMENT);
-	        preparationTitle.setVerticalAlignment(SwingConstants.TOP);
-	        preparationTitle.setFont(new Font("Tahoma", Font.BOLD, 12));
-	        productRecipe.add(preparationTitle);
-	        
-	        JLabel preparationDetails = new JLabel("<html>Primero calentar la carne, luego aregar especies al gusto de kevin, Primero calentar la carne, luego aregar especies al gusto de kevin, Primero calentar la carne, luego aregar especies al gusto de kevin</html>");
-	        preparationDetails.setFont(new Font("Tahoma", Font.PLAIN, 11));
-	        productRecipe.add(preparationDetails);
+	        JLabel recipeDetails = new JLabel("<html>"+food.getReceta()+"</html>");
+	        recipeDetails.setFont(new Font("Tahoma", Font.PLAIN, 11));
+	        recipePanel.add(recipeDetails);
 	        
 	        JPanel productButtons = new JPanel();
 	        productButtons.setBounds(623, 0, 64, 134);
-	        product.add(productButtons);
+	        productPanel.add(productButtons);
 	        productButtons.setLayout(new GridLayout(0, 1, 0, 0));
 	        
 	        JLabel lblNewLabel_7 = new JLabel("Editar");
@@ -121,12 +145,15 @@ public class Products extends JPanel {
 	        lblNewLabel_8.setHorizontalAlignment(SwingConstants.CENTER);
 	        productButtons.add(lblNewLabel_8);
 	        
-	        productsList.add(product);
+	        productsList.add(productPanel);
 		}
-        
-        JButton addButton = new JButton("Agregar producto");
-        addButton.setFont(new Font("Tahoma", Font.BOLD, 12));
-        addButton.setBounds(277, 361, 150, 29);
-        add(addButton);
+
+	    productsList.revalidate(); 
+	    productsList.repaint(); 
 	}
+}
+
+// para que el formulario de producto pueda refrescar la lista de productos
+interface ProductActions {
+    void onProductAdded();
 }
