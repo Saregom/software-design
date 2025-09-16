@@ -10,9 +10,9 @@ public class Persona {
 	private String direccion;
 	private int telefono;
 
+
 	// constructor de persona
 	public Persona(String cedula, String nombre, String direccion, int telefono) {
-		this.id = contadorId++;
 		this.cedula = cedula;
 		this.nombre = nombre;
 		this.direccion = direccion;

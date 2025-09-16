@@ -9,8 +9,6 @@ public class Empleado extends Persona{
 		super(cedula, nombre, direccion, telefono);
 		this.setCargo(cargo);
 		this.setContrasenia(contrasenia);
-		
-		// TODO Auto-generated constructor stub
 	}
 	public String getCargo() {
 		return cargo;
