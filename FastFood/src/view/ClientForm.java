@@ -92,7 +92,7 @@ public class ClientForm extends JFrame {
 		phoneField.setBounds(79, 220, 175, 25);
 		contentPane.add(phoneField);
 		
-		JLabel lblFavFood = new JLabel("Comida favorita");
+		JLabel lblFavFood = new JLabel("Comida preferida");
 		lblFavFood.setBounds(79, 256, 175, 14);
 		contentPane.add(lblFavFood);
 
@@ -118,7 +118,7 @@ public class ClientForm extends JFrame {
 		Comida selectedFood = (Comida) favFoodComboBox.getSelectedItem(); 
 		// campos vacios
         if (documentField.getText().isEmpty() || nameField.getText().isEmpty() || addressField.getText().isEmpty() || phoneField.getText().isEmpty() || selectedFood.getNombre().isEmpty()) {
-        	JOptionPane.showMessageDialog(this, "Hay campos vacios", "Alerta", JOptionPane.WARNING_MESSAGE);
+        	JOptionPane.showMessageDialog(this, "Hay campos vacíos", "Alerta", JOptionPane.WARNING_MESSAGE);
         	return;
         }
         

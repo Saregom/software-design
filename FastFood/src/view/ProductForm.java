@@ -128,7 +128,7 @@ public class ProductForm extends JFrame {
 	private void saveProduct() {
 		// campos vacios
         if (nameField.getText().isEmpty() || priceField.getText().isEmpty() || descriptionField.getText().isEmpty() || ingredientsField.getText().isEmpty() || recipeField.getText().isEmpty()) {
-        	JOptionPane.showMessageDialog(this, "Hay campos vacios", "Alerta", JOptionPane.WARNING_MESSAGE);
+        	JOptionPane.showMessageDialog(this, "Hay campos vacíos", "Alerta", JOptionPane.WARNING_MESSAGE);
         	return;
         }
         
@@ -153,7 +153,7 @@ public class ProductForm extends JFrame {
         try {
             price = Double.parseDouble(priceField.getText().trim());
         } catch (NumberFormatException e) {
-        	JOptionPane.showMessageDialog(this, "Ingresa un precio valido", "Error", JOptionPane.ERROR_MESSAGE);
+        	JOptionPane.showMessageDialog(this, "Ingresa un precio válido", "Error", JOptionPane.ERROR_MESSAGE);
         	return;
         } 
 
