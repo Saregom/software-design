@@ -19,6 +19,10 @@ public class Comida {
 		this.receta = receta;
 	}
 	
+	public Comida(int i, String string, String string2, String string3, ArrayList<String> arrayList) {
+		// TODO Auto-generated constructor stub
+	}
+
 	public void addIngredients(ArrayList<String> nuevosIngredientes) {
 		ingredientes.addAll(nuevosIngredientes);
 	}
